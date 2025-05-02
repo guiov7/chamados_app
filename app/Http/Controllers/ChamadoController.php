@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chamado;
+use App\Models\Categoria;
+use App\Models\Situacao;
 use Illuminate\Http\Request;
 
 class ChamadoController extends Controller
@@ -12,7 +14,8 @@ class ChamadoController extends Controller
      */
     public function index()
     {
-        //
+        $chamados = Chamado::all();
+        return view('chamados.index', compact('chamados'));
     }
 
     /**
