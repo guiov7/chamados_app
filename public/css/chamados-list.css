@@ -1,0 +1,144 @@
+/* public/css/chamados-list.css */
+:root {
+    --color-one: #AEB8FE;
+    --color-two: #2D3047;
+    --color-three: #E0CA3C;
+    --color-font-priority: #000;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.page-title {
+    color: var(--color-three);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.action-bar {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.action-button {
+    display: inline-block;
+    background-color: var(--color-one);
+    color: var(--color-two);
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.action-button:hover {
+    background-color: var(--color-three);
+    color: var(--color-two);
+}
+
+#btnNovo, #btnHome {
+    padding: .3rem 1rem;
+    margin: 2rem 0;
+    border-radius: 5px;
+    border: #fff solid 2px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+}
+#btnNovo {
+    background-color: lightgreen;
+}
+#btnHome {
+    background-color: lightblue;
+}
+#btnNovo:hover, #btnHome:hover  {
+    background-color: #fff;
+    color: var(--color-font-priority);
+    font-weight: 700;
+    margin-bottom: -.1rem;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #41455e;
+    color: var(--color-one);
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #555;
+}
+
+th {
+    background-color: #555;
+    color: var(--color-three);
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #555;
+}
+
+.action-cell {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.delete-form {
+    display: inline-block;
+    margin: 0;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    color: var(--color-one);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
+
+select {
+    background-color: var(--color-two);
+    color: var(--color-one);
+    border: 1px solid var(--color-one);
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 1em;
+}
+
+select:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.empty-message {
+    color: var(--color-three);
+    font-style: italic;
+}
