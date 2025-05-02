@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chamado;
 use App\Models\Categoria;
 use App\Models\Situacao;
+use App\Models\HistoricoSituacaoChamado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -88,16 +89,45 @@ class ChamadoController extends Controller
             'situacao_id' => 'required|exists:situacoes,id|in:' . Situacao::whereIn('nome', ['Pendente', 'Resolvido'])->pluck('id')->implode(','),
         ]);
 
-        $chamado->situacao_id = $request->input('situacao_id');
+        $novaSituacaoId = $request->input('situacao_id');
+
+        // Salva no histórico
+        $historico = new HistoricoSituacaoChamado();
+        $historico->chamado_id = $chamado->id;
+        $historico->situacao_id = $novaSituacaoId;
+        $historico->save();
+
+        // Atualiza a situação atual do chamado
+        $chamado->situacao_id = $novaSituacaoId;
 
         if ($chamado->situacao->nome === 'Resolvido' && $chamado->data_solucao === null) {
             $chamado->data_solucao = now();
         }
 
         if ($chamado->save()) {
-            return response()->json(['success' => true, 'message' => 'Situação do chamado atualizada com sucesso!']);
+            return response()->json(['success' => true, 'message' => 'Situação atualizada com sucesso!', 'nova_situacao' => $chamado->situacao->nome]);
         } else {
             return response()->json(['success' => false, 'message' => 'Erro ao atualizar a situação do chamado.']);
+        }
+    }
+
+    public function salvarHistoricoSituacao(Request $request, Chamado $chamado) {
+        $request->validate([
+            'situacao_id' => 'required|exists:situacoes,id|in:' . Situacao::whereIn('nome', ['Pendente', 'Resolvido'])->pluck('id')->implode(','),
+        ]);
+
+        $historico = new HistoricoSituacaoChamado();
+        $historico->chamado_id = $chamado->id;
+        $historico->situacao_id = $request->input('situacao_id');
+
+        if ($historico->save()) {
+            // Opcional: Atualizar também a tabela principal de chamados se necessário para a listagem imediata
+            $chamado->situacao_id = $request->input('situacao_id');
+            $chamado->save();
+
+            return response()->json(['success' => true, 'message' => 'Histórico de situação atualizado!', 'nova_situacao' => $historico->situacao->nome]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Erro ao salvar o histórico de situação.']);
         }
     }
 
@@ -114,7 +144,10 @@ class ChamadoController extends Controller
      */
     public function update(Request $request, Chamado $chamado)
     {
-        //
+        $chamado->situacao_id = $request->input('situacao_id');
+        $chamado->save();
+
+        return response()->json(['success' => true, 'message' => 'Situação atualizada com sucesso!']);
     }
 
     /**

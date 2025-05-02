@@ -29,4 +29,12 @@ class Chamado extends Model
     {
         return $this->belongsTo(Situacao::class);
     }
+
+    public function historicoSituacoes() {
+        return $this->hasMany(HistoricoSituacaoChamado::class);
+    }
+
+    public function ultimaSituacao() {
+        return $this->belongsTo(Situacao::class, 'situacao_id');
+    }
 }

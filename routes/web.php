@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ChamadoController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,11 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/chamados/create', [ChamadoController::class, 'create'])->name('chamados.create');
 Route::post('/chamados', [ChamadoController::class, 'store'])->name('chamados.store');
-Route::resource('chamados', ChamadoController::class);
-
-Route::put('/chamados/{chamado}/atualizar-situacao', [ChamadoController::class, 'atualizarSituacao'])->name('chamados.atualizarSituacao');
+Route::put('/chamados/{chamado}/historico-situacao', [ChamadoController::class, 'salvarHistoricoSituacao'])->name('chamados.salvarHistoricoSituacao');
+Route::resource('chamados', ChamadoController::class)->except(['create']); // Excluímos a rota create aqui, pois o link "Novo Chamado" estará na listagem

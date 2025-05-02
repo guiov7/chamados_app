@@ -15,7 +15,7 @@ class Situacao extends Model
         'nome',
     ];
 
-    public function chamados(): HasMany
+    public function chamados(): HasMany /*  */
     {
         return $this->hasMany(Chamado::class);
     }
