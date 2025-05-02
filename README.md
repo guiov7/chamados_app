@@ -4,10 +4,9 @@ O objetivo deste projeto é desenvolver um sistema web para gerenciar chamados d
 
 #### MAIN SCHEMA	 ![Diagrama Relacional](./public/relational-diagram.png)
 
-#### INTERMEDIATE SCHEMA	![1746213337994](image/README/1746213337994.png)
+#### INTERMEDIATE SCHEMA	 ![Diagrama Relacional](./public/historico_situacao_chamado.png)
 
-
-## Pré-requisitos para Build
+#### Pré-requisitos para Build
 
 Certifique-se de ter os seguintes softwares instalados e configurados em seu ambiente de desenvolvimento:
 
