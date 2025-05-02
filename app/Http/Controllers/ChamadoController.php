@@ -7,6 +7,7 @@ use App\Models\Categoria;
 use App\Models\Situacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class ChamadoController extends Controller
 {
@@ -97,6 +98,8 @@ class ChamadoController extends Controller
      */
     public function destroy(Chamado $chamado)
     {
-        //
+        $chamado->delete();
+
+        return Redirect::route('chamados.index')->with('success', 'Chamado excluído com sucesso!');
     }
 }

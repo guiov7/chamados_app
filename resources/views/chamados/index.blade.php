@@ -39,7 +39,11 @@
                         <td>{{ \Carbon\Carbon::parse($chamado->data_criacao)->format('d/m/Y H:i:s') }}</td>
                         <td>
                             <a href="{{ route('chamados.show', $chamado->id) }}">Ver</a>
-                            <a href="#">Excluir</a>
+                            <form action="{{ route('chamados.destroy', $chamado->id) }}" method="POST" style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este chamado?')">Excluir</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
