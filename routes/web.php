@@ -18,5 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::resource('chamados', ChamadoController::class);
 Route::post('/chamados', [ChamadoController::class, 'store'])->name('chamados.store');
+Route::resource('chamados', ChamadoController::class);
+
