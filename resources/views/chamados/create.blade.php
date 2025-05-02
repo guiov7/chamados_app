@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Chamado</title>
 </head>
+
 <body>
     <h1>Novo Chamado</h1>
 
@@ -19,7 +21,7 @@
             <select id="categoria_id" name="categoria_id" required>
                 <option value="">Selecione a Categoria</option>
                 @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
+                <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
                 @endforeach
             </select>
         </div>
@@ -44,7 +46,7 @@
             <input type="datetime-local" id="data_criacao" name="data_criacao">
         </div>
 
-        <button type="button" onclick="enviarChamado()">Salvar Chamado (JSON)</button>
+        <button type="button" onclick="enviarChamado()">Criar Chamado</button>
         <a href="{{ route('chamados.index') }}">Cancelar</a>
     </form>
 
@@ -69,25 +71,30 @@
 
             console.log('Dados enviados:', data);
             fetch('/chamados', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(result => {
-                document.getElementById('mensagem').innerText = result.message;
-                if (result.success) {
-                    window.location.href = '{{ route('chamados.index') }}';
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                document.getElementById('mensagem').innerText = 'Ocorreu um erro ao enviar o chamado.';
-            });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.href = '/chamados'; // Redireciona para a listagem
+                    } else {
+                        alert(data.message);
+                        selectElement.value = originalValue;
+                        atualizarOpcoesSelect(selectElement, originalValue);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    document.getElementById('mensagem').innerText = 'Ocorreu um erro ao enviar o chamado.';
+                });
         }
     </script>
 </body>
+
 </html>
