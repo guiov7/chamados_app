@@ -73,7 +73,7 @@ class ChamadoController extends Controller
      */
     public function show(Chamado $chamado)
     {
-        //
+        return view('chamados.show', compact('chamado'));
     }
 
     /**
