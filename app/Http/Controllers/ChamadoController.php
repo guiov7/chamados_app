@@ -17,13 +17,15 @@ class ChamadoController extends Controller
     public function index()
     {
         $chamados = Chamado::all();
-        return view('chamados.index', compact('chamados'));
+        $situacoes = Situacao::all();
+        return view('chamados.index', compact('chamados', 'situacoes'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create()
+    {
         $categorias = Categoria::all();
         $situacaoNovo = Situacao::where('nome', 'Novo')->first();
         // dd($situacaoNovo);  # debug
@@ -75,6 +77,28 @@ class ChamadoController extends Controller
     public function show(Chamado $chamado)
     {
         return view('chamados.show', compact('chamado'));
+    }
+
+    /**
+     * atualizar situacao do chamado.
+     */
+    public function atualizarSituacao(Request $request, Chamado $chamado)
+    {
+        $request->validate([
+            'situacao_id' => 'required|exists:situacoes,id|in:' . Situacao::whereIn('nome', ['Pendente', 'Resolvido'])->pluck('id')->implode(','),
+        ]);
+
+        $chamado->situacao_id = $request->input('situacao_id');
+
+        if ($chamado->situacao->nome === 'Resolvido' && $chamado->data_solucao === null) {
+            $chamado->data_solucao = now();
+        }
+
+        if ($chamado->save()) {
+            return response()->json(['success' => true, 'message' => 'Situação do chamado atualizada com sucesso!']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Erro ao atualizar a situação do chamado.']);
+        }
     }
 
     /**

@@ -21,3 +21,4 @@ Route::get('/', function () {
 Route::post('/chamados', [ChamadoController::class, 'store'])->name('chamados.store');
 Route::resource('chamados', ChamadoController::class);
 
+Route::put('/chamados/{chamado}/atualizar-situacao', [ChamadoController::class, 'atualizarSituacao'])->name('chamados.atualizarSituacao');
