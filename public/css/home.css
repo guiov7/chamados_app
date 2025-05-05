@@ -10,6 +10,15 @@
     margin-bottom: 30px;
 }
 
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -22,6 +31,11 @@
     padding: 20px;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#linkList {
+    font-size: larger;
+    color: var(--color-three);
 }
 
 .dashboard-item-title {
@@ -38,18 +52,27 @@
     font-weight: bold;
 }
 
-.dashboard-link {
-    display: inline-block;
-    background-color: var(--color-one);
-    color: var(--color-two);
-    padding: 10px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+.dashboard-item form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.dashboard-link:hover {
-    background-color: var(--color-three);
-    color: var(--color-two);
+.dashboard-item form input[type="month"] {
+    padding: 8px;
+    border: 1px solid var(--color-one);
+    border-radius: 5px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+    box-sizing: border-box;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+#specialArea {
+    width: 100%;
 }
