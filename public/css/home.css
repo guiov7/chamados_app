@@ -1,18 +1,4 @@
 /* public/css/home.css */
-:root {
-    --color-one: #AEB8FE;
-    --color-two: #2D3047;
-    --color-three: #E0CA3C;
-    --color-font-priority: #000;
-}
-
-body {
-    font-family: sans-serif;
-    margin: 20px;
-    background-color: var(--color-two);
-    color: var(--color-one);
-}
-
 .container {
     max-width: 800px;
     margin: 0 auto;

@@ -5,52 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Chamado</title>
+    <link rel="stylesheet" href="{{asset('/css/global.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/chamado-create.css')}}">
 </head>
 
 <body>
     <h1>Novo Chamado</h1>
+    <div class="form-container">
+        <form id="novoChamadoForm" >
+            <div class="form-group">
+                <label class="form-label" for="titulo">Título:</label>
+                <input class="form-input" type="text" id="titulo" name="titulo" required>
+            </div>
 
-    <form id="novoChamadoForm">
-        <div>
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
-        </div>
+            <div class="form-group">
+                <label class="form-label" for="categoria_id">Categoria:</label>
+                <select class="form-select" id="categoria_id" name="categoria_id" required>
+                    <option value="">Selecione a Categoria</option>
+                    @foreach ($categorias as $categoria)
+                        <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-        <div>
-            <label for="categoria_id">Categoria:</label>
-            <select id="categoria_id" name="categoria_id" required>
-                <option value="">Selecione a Categoria</option>
-                @foreach ($categorias as $categoria)
-                <option value="{{ $categoria->id }}">{{ $categoria->nome }}</option>
-                @endforeach
-            </select>
-        </div>
+            <div class="form-group">
+                <label class="form-label" for="descricao">Descrição:</label>
+                <textarea class="form-textarea" id="descricao" name="descricao" rows="5" required></textarea>
+            </div>
 
-        <div>
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" rows="5" required></textarea>
-        </div>
+            <div style="display:none;">
+                <label class="form-label" for="prazo_solucao">Prazo de Solução:</label>
+                <input class="form-input" type="date" id="prazo_solucao" name="prazo_solucao">
+            </div>
 
-        <div style="display:none;">
-            <label for="prazo_solucao">Prazo de Solução:</label>
-            <input type="date" id="prazo_solucao" name="prazo_solucao">
-        </div>
+            <div style="display:none;">
+                <label class="form-label" for="situacao_id">Situação:</label>
+                <input class="form-input" type="hidden" id="situacao_id" name="situacao_id"
+                    value="{{ $situacaoNovo->id ?? '' }}">
+            </div>
 
-        <div style="display:none;">
-            <label for="situacao_id">Situação:</label>
-            <input type="hidden" id="situacao_id" name="situacao_id" value="{{ $situacaoNovo->id ?? '' }}">
-        </div>
+            <div style="display:none;">
+                <label class="form-label" for="data_criacao">Data de Criação:</label>
+                <input class="form-input" type="datetime-local" id="data_criacao" name="data_criacao">
+            </div>
 
-        <div style="display:none;">
-            <label for="data_criacao">Data de Criação:</label>
-            <input type="datetime-local" id="data_criacao" name="data_criacao">
-        </div>
-
-        <button type="button" onclick="enviarChamado()">Criar Chamado</button>
-        <a href="{{ route('chamados.index') }}">Cancelar</a>
-    </form>
-
-    <div id="mensagem" style="margin-top: 20px;"></div>
+            <button class="form-button" type="button" onclick="enviarChamado()">Criar Chamado</button>
+            <a class="rc-btn" href="{{ route('chamados.index') }}" class="form-cancel-link">Cancelar</a>
+        </form>
+    </div>
+    <div id="mensagem" class="error-message"></div>
 
     <script>
         function enviarChamado() {
@@ -71,13 +74,13 @@
 
             console.log('Dados enviados:', data);
             fetch('/chamados', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                    body: JSON.stringify(data),
-                })
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify(data),
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {

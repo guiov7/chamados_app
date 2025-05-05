@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Chamado</title>
+    <link rel="stylesheet" href="{{asset('/css/global.css')}}">
 </head>
+
 <body>
     <h1>Detalhes do Chamado</h1>
 
@@ -38,7 +41,13 @@
             <strong>Data de Solução:</strong> {{ \Carbon\Carbon::parse($chamado->data_solucao)->format('d/m/Y H:i:s') }}
         </div>
     @endisset
-
-    <a href="{{ route('chamados.index') }}">Voltar para a Listagem</a>
+    <form action="{{ route('chamados.destroy', $chamado->id) }}" method="POST" class="delete-form">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="delete-button"
+            onclick="return confirm('Tem certeza que deseja excluir este chamado?')">Excluir</button>
+    </form>
+    <a class="rc-btn" href="{{ route('chamados.index') }}">Voltar para a Listagem</a>
 </body>
+
 </html>

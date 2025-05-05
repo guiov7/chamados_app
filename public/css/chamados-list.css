@@ -1,20 +1,6 @@
 /* public/css/chamados-list.css */
-:root {
-    --color-one: #AEB8FE;
-    --color-two: #2D3047;
-    --color-three: #E0CA3C;
-    --color-font-priority: #000;
-}
-
-body {
-    font-family: sans-serif;
-    margin: 20px;
-    background-color: var(--color-two);
-    color: var(--color-one);
-}
-
 .container {
-    max-width: 960px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -35,20 +21,14 @@ body {
     display: inline-block;
     background-color: var(--color-one);
     color: var(--color-two);
-    padding: 10px 15px;
+    padding: 7px 15px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
-.action-button:hover {
-    background-color: var(--color-three);
-    color: var(--color-two);
-}
 
 #btnNovo, #btnHome {
-    padding: .3rem 1rem;
-    margin: 2rem 0;
     border-radius: 5px;
     border: #fff solid 2px;
     cursor: pointer;
@@ -98,10 +78,22 @@ tbody tr:nth-child(even) {
     background-color: #555;
 }
 
+.clickable-row:hover {
+    background-color: #5e6582;
+    cursor: pointer;
+}
+
 .action-cell {
     display: flex;
     gap: 10px;
     align-items: center;
+}
+#editBtn {
+    background-color: var(--color-three);
+}
+#editBtn:hover {
+    background-color: var(--color-two);
+    color: var(--color-three);
 }
 
 .delete-form {
@@ -110,8 +102,7 @@ tbody tr:nth-child(even) {
 }
 
 .delete-button {
-    background-color: #d9534f;
-    color: var(--color-one);
+    background-color: var(#fff);
     border: none;
     padding: 8px 12px;
     border-radius: 5px;

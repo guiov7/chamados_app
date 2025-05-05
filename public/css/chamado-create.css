@@ -1,0 +1,81 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page-title {
+    color: var(--color-three);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-container {
+    background-color: #41455e;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    color: var(--color-one);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-one);
+    border-radius: 5px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+    box-sizing: border-box;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-one);
+    border-radius: 5px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-one);
+    border-radius: 5px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+    box-sizing: border-box;
+    appearance: none; /* Remove estilos padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23AEB8FE" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: 50%;
+}
+
+.form-button {
+    background-color: var(--color-three);
+    color: var(--color-two);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #c9b232;
+}

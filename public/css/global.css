@@ -1,0 +1,39 @@
+:root {
+    --color-one: #AEB8FE;
+    --color-two: #2D3047;
+    --color-three: #E0CA3C;
+    --color-font-priority: #000;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: var(--color-two);
+    color: var(--color-one);
+}
+
+.rc-btn {
+    text-decoration: none;
+    color: var(--color-three)
+}
+.rc-btn:hover{
+    text-decoration: underline;
+    color: var(--color-one);
+}
+
+.form-cancel-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--color-one);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.form-cancel-link:hover {
+    color: var(--color-three);
+}
+
+.error-message {
+    color: #f44336;
+    margin-top: 20px;
+}
