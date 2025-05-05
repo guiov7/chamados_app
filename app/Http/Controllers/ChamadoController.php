@@ -19,7 +19,8 @@ class ChamadoController extends Controller
     {
         $chamados = Chamado::all();
         $situacoes = Situacao::all();
-        return view('chamados.index', compact('chamados', 'situacoes'));
+        $categorias = Categoria::all();
+        return view('chamados.index', compact('chamados', 'situacoes','categorias'));
     }
 
     /**
@@ -113,19 +114,24 @@ class ChamadoController extends Controller
 
     public function salvarHistoricoSituacao(Request $request, Chamado $chamado) {
         $request->validate([
-            'situacao_id' => 'required|exists:situacoes,id|in:' . Situacao::whereIn('nome', ['Pendente', 'Resolvido'])->pluck('id')->implode(','),
+            'situacao_id' => 'required|exists:situacoes,id|in:' . Situacao::whereIn('nome', ['Resolvido', 'Em Andamento'])->pluck('id')->implode(','),
         ]);
+
+        $novaSituacaoId = $request->input('situacao_id');
 
         $historico = new HistoricoSituacaoChamado();
         $historico->chamado_id = $chamado->id;
-        $historico->situacao_id = $request->input('situacao_id');
+        $historico->situacao_id = $novaSituacaoId;
+        $historico->save();
 
-        if ($historico->save()) {
-            // Opcional: Atualizar também a tabela principal de chamados se necessário para a listagem imediata
-            $chamado->situacao_id = $request->input('situacao_id');
-            $chamado->save();
+        $chamado->situacao_id = $novaSituacaoId;
 
-            return response()->json(['success' => true, 'message' => 'Histórico de situação atualizado!', 'nova_situacao' => $historico->situacao->nome]);
+        if ($chamado->situacao->nome === 'Resolvido' && $chamado->data_resolvido === null) {
+            $chamado->data_resolvido = now();
+        }
+
+        if ($chamado->save()) {
+            return response()->json(['success' => true, 'message' => 'Histórico de situação atualizado!', 'nova_situacao' => $chamado->situacao->nome]);
         } else {
             return response()->json(['success' => false, 'message' => 'Erro ao salvar o histórico de situação.']);
         }
@@ -142,12 +148,30 @@ class ChamadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chamado $chamado)
-    {
-        $chamado->situacao_id = $request->input('situacao_id');
-        $chamado->save();
+    public function update(Request $request, Chamado $chamado) {
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'categoria_id' => 'required|exists:categorias,id',
+            'descricao' => 'required|string',
+            'prazo_solucao' => 'required|date',
+            'situacao_id' => 'required|exists:situacoes,id',
+            'data_criacao' => 'required|date',
+            'data_solucao' => 'nullable|date',
+        ]);
 
-        return response()->json(['success' => true, 'message' => 'Situação atualizada com sucesso!']);
+        $chamado->titulo = $request->input('titulo');
+        $chamado->categoria_id = $request->input('categoria_id');
+        $chamado->descricao = $request->input('descricao');
+        $chamado->prazo_solucao = $request->input('prazo_solucao');
+        $chamado->situacao_id = $request->input('situacao_id');
+        $chamado->data_criacao = $request->input('data_criacao');
+        $chamado->data_solucao = $request->input('data_solucao');
+
+        if ($chamado->save()) {
+            return redirect()->route('chamados.index')->with('success', 'Chamado atualizado com sucesso!');
+        } else {
+            return back()->with('error', 'Erro ao atualizar o chamado.');
+        }
     }
 
     /**
@@ -158,5 +182,44 @@ class ChamadoController extends Controller
         $chamado->delete();
 
         return Redirect::route('chamados.index')->with('success', 'Chamado excluído com sucesso!');
+    }
+
+    /**
+     * Filter a specific resource from storage.
+     */
+    public function filtrarChamados(Request $request) {
+        $query = Chamado::query()->with('categoria', 'ultimaSituacao');
+
+        if ($request->filled('titulo')) {
+            $query->where('titulo', 'like', '%' . $request->input('titulo') . '%');
+        }
+
+        if ($request->filled('categoria_id')) {
+            $query->where('categoria_id', $request->input('categoria_id'));
+        }
+
+        if ($request->filled('data_criacao')) {
+            $query->whereDate('data_criacao', $request->input('data_criacao'));
+        }
+
+        if ($request->filled('prazo_solucao')) {
+            $query->whereDate('prazo_solucao', $request->input('prazo_solucao'));
+        }
+
+        if ($request->filled('concluido')) {
+            if ($request->input('concluido') === 'sim') {
+                $query->whereNotNull('data_resolvido');
+            } elseif ($request->input('concluido') === 'nao') {
+                $query->whereNull('data_resolvido');
+            }
+        }
+
+        if ($request->filled('situacao_id')) {
+            $query->where('situacao_id', $request->input('situacao_id'));
+        }
+
+        $chamadosFiltrados = $query->get();
+
+        return response()->json($chamadosFiltrados);
     }
 }

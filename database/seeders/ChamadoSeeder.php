@@ -17,7 +17,6 @@ class ChamadoSeeder extends Seeder
      */
     public function run(): void
     {
-        // Obter todas as categorias e situações existentes
         $categorias = Categoria::all()->pluck('id')->toArray();
         $situacoes = Situacao::all()->pluck('id', 'nome')->toArray();
 
@@ -36,35 +35,41 @@ class ChamadoSeeder extends Seeder
             return;
         }
 
-        $numChamados = rand(80, 120);
+        $numChamados = rand(100, 150);
 
         for ($i = 0; $i < $numChamados; $i++) {
             $categoriaId = Arr::random($categorias);
             $situacaoInicialId = $situacaoNovoId;
 
-            // Gerar datas variadas nos últimos meses
-            $dataCriacao = Carbon::now()->subDays(rand(0, 90))->setHour(rand(8, 18))->setMinute(rand(0, 59))->setSecond(rand(0, 59));
-            $prazoSolucao = $dataCriacao->copy()->addDays(3);
+            $dataCriacao = Carbon::now()->subDays(rand(0, 120))->setHour(rand(8, 18))->setMinute(rand(0, 59))->setSecond(rand(0, 59));
+            $prazoSolucao = $dataCriacao->copy()->addDays(3)->endOfDay();
 
             $titulo = 'Chamado de Teste #' . ($i + 1);
             $descricao = 'Descrição detalhada do chamado de teste #' . ($i + 1) . '. Conteúdo aleatório para simulação.';
-
-            $dataSolucao = null;
+            $dataResolvido = null;
             $situacaoFinalId = $situacaoInicialId;
 
-            // Simular resolução com maior probabilidade
-            if (rand(1, 10) <= 7 && $situacaoResolvidoId !== null) {
+            if (rand(1, 10) <= 8 && $situacaoResolvidoId !== null) {
                 $situacaoFinalId = $situacaoResolvidoId;
-                $dataSolucao = $dataCriacao->copy()->addHours(rand(1, 72))->setMinute(rand(0, 59))->setSecond(rand(0, 59));
-                if ($dataSolucao->greaterThan($prazoSolucao->copy()->endOfDay())) {
-                    // Simular resolução fora do prazo em alguns casos
-                    if (rand(1, 4) == 1) {
-                        $dataSolucao->addDays(rand(1, 2));
+                $dataResolvido = $dataCriacao->copy()->addHours(rand(1, 96))->setMinute(rand(0, 59))->setSecond(rand(0, 59));
+                if (rand(1, 3) == 1) {
+                    // Simular chamados resolvidos fora do prazo
+                    $dataResolvido->addDays(rand(1, 5));
+                } else {
+                    // Garantir que a data de resolução não seja antes da criação
+                    if ($dataResolvido->lessThan($dataCriacao)) {
+                        $dataResolvido = $dataCriacao->copy()->addHours(1);
+                    }
+                    // Garantir que a data de resolução não seja antes do prazo em chamados resolvidos no prazo
+                    if ($dataResolvido->greaterThan($prazoSolucao)) {
+                        if (rand(1, 2) == 1) {
+                            $dataResolvido = $prazoSolucao->copy()->subHours(rand(0, 12));
+                        }
                     }
                 }
-            } else if (rand(1, 10) <= 9 && $situacaoPendenteId !== null) {
+            } else if ($situacaoPendenteId !== null && rand(1, 10) <= 2) {
                 $situacaoFinalId = $situacaoPendenteId;
-            } else if ($situacaoEmAndamentoId !== null) {
+            } else if ($situacaoEmAndamentoId !== null && rand(1, 10) <= 2) {
                 $situacaoFinalId = $situacaoEmAndamentoId;
             }
 
@@ -72,13 +77,13 @@ class ChamadoSeeder extends Seeder
                 'titulo' => $titulo,
                 'categoria_id' => $categoriaId,
                 'descricao' => $descricao,
-                'prazo_solucao' => $prazoSolucao,
+                'prazo_solucao' => $prazoSolucao->toDateString(),
                 'situacao_id' => $situacaoFinalId,
                 'data_criacao' => $dataCriacao,
-                'data_solucao' => $dataSolucao,
+                'data_resolvido' => $dataResolvido,
             ]);
         }
 
-        $this->command->info('Chamados de teste populados com sucesso!');
+        $this->command->info('Chamados de teste populados com sucesso (com dados de SLA)!');
     }
 }

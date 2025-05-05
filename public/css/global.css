@@ -12,6 +12,31 @@ body {
     color: var(--color-one);
 }
 
+#editBtn {
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 15px;
+    background-color: var(--color-three);
+}
+#editBtn:hover {
+    background-color: var(--color-two);
+    color: var(--color-three);
+}
+.delete-button {
+    background-color: var(#fff);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
+}
+
 .rc-btn {
     text-decoration: none;
     color: var(--color-three)

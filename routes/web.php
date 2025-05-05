@@ -24,3 +24,4 @@ Route::get('/chamados/{chamado}/edit', [ChamadoController::class, 'edit'])->name
 Route::post('/chamados/{chamado}', [ChamadoController::class, 'update'])->name('chamados.update');
 Route::put('/chamados/{chamado}/historico-situacao', [ChamadoController::class, 'salvarHistoricoSituacao'])->name('chamados.salvarHistoricoSituacao');
 Route::resource('chamados', ChamadoController::class)->except(['create']); // Nesta rota o create method possui link em "Novo Chamado"
+Route::post('/chamados/filtrar', [ChamadoController::class, 'filtrarChamados'])->name('chamados.filtrar');

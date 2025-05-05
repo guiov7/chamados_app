@@ -1,0 +1,29 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.page-title {
+    color: var(--color-three);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-container {
+    background-color: #41455e;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#divBtns {
+    margin-top: 2rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+#divBtns div {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+}

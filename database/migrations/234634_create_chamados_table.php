@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('situacao_id')->constrained('situacoes')->onDelete('cascade');
             $table->dateTime('data_criacao');
             $table->dateTime('data_solucao')->nullable();
+            $table->timestamp('data_resolvido')->nullable();
             $table->timestamps();
         });
     }
