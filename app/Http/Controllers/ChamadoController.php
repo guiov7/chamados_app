@@ -134,9 +134,9 @@ class ChamadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chamado $chamado)
-    {
-        //
+    public function edit(Chamado $chamado) {
+        $categorias = Categoria::all();
+        return view('chamados.edit', compact('chamado', 'categorias'));
     }
 
     /**

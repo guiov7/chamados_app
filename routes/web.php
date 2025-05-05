@@ -20,5 +20,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/chamados/create', [ChamadoController::class, 'create'])->name('chamados.create');
 Route::post('/chamados', [ChamadoController::class, 'store'])->name('chamados.store');
+Route::get('/chamados/{chamado}/edit', [ChamadoController::class, 'edit'])->name('chamados.edit');
+Route::post('/chamados/{chamado}', [ChamadoController::class, 'update'])->name('chamados.update');
 Route::put('/chamados/{chamado}/historico-situacao', [ChamadoController::class, 'salvarHistoricoSituacao'])->name('chamados.salvarHistoricoSituacao');
-Route::resource('chamados', ChamadoController::class)->except(['create']); // Excluímos a rota create aqui, pois o link "Novo Chamado" estará na listagem
+Route::resource('chamados', ChamadoController::class)->except(['create']); // Nesta rota o create method possui link em "Novo Chamado"
